@@ -1,7 +1,5 @@
 const API = "https://api.open-meteo.com/v1/forecast?hourly=temperature_2m";
 const searchAPI = "https://geocoding-api.open-meteo.com/v1/search";
-const days = [];
-const MONTHS = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
 
 async function search() {
     resetData("search-container", "weather-title", "days-container", "weather-container");
@@ -34,7 +32,7 @@ async function getData() {
     const raw = await response.json();
 
     document.getElementById("weather-title").innerHTML = name;
-
+    const days = [];
     const hours = raw.hourly;
     for (let index = 0, mapIndex = 0; index < hours.time.length; index++) {
         if (index == 0) {
@@ -51,29 +49,18 @@ async function getData() {
         }
     }
 
-    const select = document.createElement("select");
-    buildSelectOptions(select);
-    document.getElementById("days-container").appendChild(select);
-}
-
-/** @param {HTMLSelectElement} select */
-function buildSelectOptions(select) {
-    resetData("days-container", "weather-container");
-    select.id = "selected-day";
-    select.innerHTML = "";
-    select.onchange = () => buildHourComponents();
-    select.appendChild(getNullOption());
+    resetData("days-container");
     for (const [index, day] of days.entries()) {
-        const option = document.createElement("option");
-        option.text = getFormattedOptionDate(new Date(day.entries().next().value[0]));
-        option.value = index;
-        select.appendChild(option);
+        const button = document.createElement("button");
+        button.textContent = getFormattedOptionDate(new Date(day.entries().next().value[0]));
+        button.onclick = () => { buildHourComponents(days, index) };
+        document.getElementById("days-container").appendChild(button);
     }
 }
 
-function buildHourComponents() {
+function buildHourComponents(days, index) {
     resetData("weather-container");
-    const day = days[document.getElementById("selected-day").value];
+    const day = days[index];
     day.forEach((temperature, hour) => {
         const span = document.createElement("p");
         span.className = "hour";
@@ -101,6 +88,7 @@ function getFormattedHour(date) {
  * @returns {string}
  */
 function getFormattedOptionDate(date) {
+    const MONTHS = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
     return `${date.getDate()} ${MONTHS[date.getMonth()]}`;
 }
 
