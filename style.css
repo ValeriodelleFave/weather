@@ -18,12 +18,27 @@ input, #search-container select {
     min-width: 250px;
 }
 
+#days-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
 #weather-container {
+    margin-top: 1em;
     display: flex;
     width: 100%;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+}
+
+table {
+    width: 100%;
+}
+
+td {
+    text-align: center;
 }
 
 .hot {
@@ -35,11 +50,11 @@ input, #search-container select {
 }
 
 .day {
-
     margin: 10px;
 }
 
 footer {
+    margin-top: 1em;
     width: 100%;
     text-align: center;
     position: relative;

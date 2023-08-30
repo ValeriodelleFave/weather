@@ -4,31 +4,31 @@ const WMO = {
     0: "Clear sky",
     1: "Mainly clear",
     2: "partly cloudy",
-    3: "and overcast",
+    3: "overcast",
     45: "Fog",
     48: "depositing rime fog",
     51: "Drizzle Light",
     53: "Drizzle moderate",
-    55:	"Drizzle: dense intensity",
-    56: "Freezing Drizzle: Light intensity", 
+    55: "Drizzle: dense intensity",
+    56: "Freezing Drizzle: Light intensity",
     57: "Freezing Drizzle dense intensity",
-    61: "Rain: Slight intensity", 
-    63: "Rain: moderate intensity", 
-    65: "Rain: heavy intensity",	
-    66: "Freezing Rain: Light intensity", 
+    61: "Rain: Slight intensity",
+    63: "Rain: moderate intensity",
+    65: "Rain: heavy intensity",
+    66: "Freezing Rain: Light intensity",
     67: "Freezing Rain: heavy intensity",
-    71: "Snow fall: Slight intensity", 
-    73: "Snow fall: moderate intensity", 
+    71: "Snow fall: Slight intensity",
+    73: "Snow fall: moderate intensity",
     75: "Snow fall: heavy intensity",
-    77:	"Snow grains",
-    80: "Rain showers: Slight", 
-    81: "Rain showers: moderate", 
-    82: "Rain showers: violent", 
-    85: "Snow showers slight", 
-    86: "Snow showers heavy", 
+    77: "Snow grains",
+    80: "Rain showers: Slight",
+    81: "Rain showers: moderate",
+    82: "Rain showers: violent",
+    85: "Snow showers slight",
+    86: "Snow showers heavy",
     95: "Thunderstorm: Slight or moderate",
-    96:	"Thunderstorm with slight hail",
-    99:	"Thunderstorm with heavy hail"
+    96: "Thunderstorm with slight hail",
+    99: "Thunderstorm with heavy hail"
 };
 
 async function search() {
@@ -48,8 +48,8 @@ async function search() {
     select.appendChild(getNullOption());
     for (const city of raw.results) {
         const option = document.createElement("option");
-        option.text = city.name;
-        option.value = [city.latitude, city.longitude, city.name];
+        option.text = `${city.name} - ${city.country}`;
+        option.value = [city.latitude, city.longitude, `${city.name} - ${city.country} - ${city.admin1} - ${city.admin3}`];
         select.appendChild(option);
     }
     select.onchange = () => getData();
@@ -84,7 +84,7 @@ async function getData() {
     }
 
     resetData("days-container");
-    for (const [index, day] of days.entries()) {
+    for (const day of days) {
         const button = document.createElement("button");
         button.textContent = getFormattedOptionDate(new Date(day[0].time));
         button.onclick = () => { buildHourComponents(day) };
@@ -94,22 +94,41 @@ async function getData() {
 
 function buildHourComponents(hours, index) {
     resetData("weather-container");
-    for (const hour of hours) {
-        const span = document.createElement("p");
-        for (const key in hour) {
-            span.className = "hour";
-            if (key == "weathercode") {
-                span.innerHTML += `${WMO[hour[key]]} `;
-            } else if (key == "time") {
-                span.innerHTML += `${getFormattedHour(new Date(hour[key]))} `;
-            } else if (key == "temperature_2m") {
-                span.innerHTML += `${hour[key]} °C`;
-            } else {
-                span.innerHTML += `${hour[key]} `;
-            }
-        }
-        document.getElementById("weather-container").appendChild(span);
+    const table = document.createElement("table");
+
+    const tr = document.createElement("tr");
+    for (const key of ["Ora", "Tempo", "Temperatura", "Precipitazioni"]) {
+        const th = document.createElement("th");
+        th.textContent = key;
+        tr.appendChild(th);
     }
+    table.appendChild(tr);
+
+    for (const hour of hours) {
+        const tr = document.createElement("tr");
+        for (const key of ["time", "weathercode", "temperature_2m", "precipitation_probability"]) {
+            const td = document.createElement("td");
+            switch (key) {
+                case "time":
+                    td.textContent = getFormattedHour(new Date(hour[key]));
+                    break;
+                case "weathercode":
+                    td.textContent = WMO[hour[key]];
+                    break;
+                case "temperature_2m":
+                    td.textContent = hour[key] + "°C";
+                    break;
+                case "precipitation_probability":
+                    td.textContent = hour[key] + "%";
+                    break;
+                default:
+                    break;
+            }
+            tr.appendChild(td);
+        }
+        table.appendChild(tr);
+    }
+    document.getElementById("weather-container").appendChild(table);
 }
 
 /**
@@ -127,7 +146,7 @@ function getFormattedHour(date) {
  */
 function getFormattedOptionDate(date) {
     const MONTHS = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
-    return `${date.getDate()} ${MONTHS[date.getMonth()]}`;
+    return `${date.getDate()}/${date.getMonth()}`;
 }
 
 function getNullOption() {
