@@ -52,7 +52,7 @@ async function search() {
     for (const city of raw.results) {
         const option = document.createElement("option");
         option.text = `${city.name} - ${city.country}`;
-        option.value = [city.latitude, city.longitude, `${city.name} - ${city.country} - ${city.admin1} - ${city.admin3}`];
+        option.value = [city.latitude, city.longitude, `${city.name} ${city.country ? "- " + city.country : ""} ${city.admin1 ? "- " + city.admin1 : ""} ${city.admin3 ? "- " + city.admin3 : ""}`];
         select.appendChild(option);
     }
     document.getElementById("search-container").appendChild(select);
