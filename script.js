@@ -43,8 +43,11 @@ async function search() {
         resetData("search-container", "weather-title", "days-container", "weather-container");
         return;
     }
-    const select = document.createElement("select");
+    
+    const select = document.getElementById("search") ? document.getElementById("search") : document.createElement("select");
     select.id = "search";
+    select.onchange = () => getData();
+    select.innerHTML = "";
     select.appendChild(getNullOption());
     for (const city of raw.results) {
         const option = document.createElement("option");
@@ -52,7 +55,6 @@ async function search() {
         option.value = [city.latitude, city.longitude, `${city.name} - ${city.country} - ${city.admin1} - ${city.admin3}`];
         select.appendChild(option);
     }
-    select.onchange = () => getData();
     document.getElementById("search-container").appendChild(select);
 }
 
