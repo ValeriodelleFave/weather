@@ -1,34 +1,34 @@
 const API = "https://api.open-meteo.com/v1/forecast?hourly=temperature_2m,precipitation_probability,weathercode";
 const searchAPI = "https://geocoding-api.open-meteo.com/v1/search";
 const WMO = {
-    0: "Clear sky",
-    1: "Mainly clear",
-    2: "partly cloudy",
-    3: "overcast",
-    45: "Fog",
-    48: "depositing rime fog",
-    51: "Drizzle Light",
-    53: "Drizzle moderate",
-    55: "Drizzle: dense intensity",
-    56: "Freezing Drizzle: Light intensity",
-    57: "Freezing Drizzle dense intensity",
-    61: "Rain: Slight intensity",
-    63: "Rain: moderate intensity",
-    65: "Rain: heavy intensity",
-    66: "Freezing Rain: Light intensity",
-    67: "Freezing Rain: heavy intensity",
-    71: "Snow fall: Slight intensity",
-    73: "Snow fall: moderate intensity",
-    75: "Snow fall: heavy intensity",
-    77: "Snow grains",
-    80: "Rain showers: Slight",
-    81: "Rain showers: moderate",
-    82: "Rain showers: violent",
-    85: "Snow showers slight",
-    86: "Snow showers heavy",
-    95: "Thunderstorm: Slight or moderate",
-    96: "Thunderstorm with slight hail",
-    99: "Thunderstorm with heavy hail"
+    0: "wi-day-sunny",
+    1: "wi-day-cloudy",
+    2: "wi-cloud",
+    3: "wi-cloudy",
+    45: "wi-fog",
+    48: "wi-day-fog",
+    51: "wi-sleet",
+    53: "wi-sleet",
+    55: "wi-sleet",
+    56: "wi-rain-mix",
+    57: "wi-rain-mix",
+    61: "wi-showers",
+    63: "wi-showers",
+    65: "wi-showers",
+    66: "wi-hail",
+    67: "wi-hail",
+    71: "wi-snow",
+    73: "wi-snow",
+    75: "wi-snow",
+    77: "wi-snow",
+    80: "wi-sprinkle",
+    81: "wi-sprinkle",
+    82: "wi-sprinkle",
+    85: "wi-snow-wind",
+    86: "wi-snow-wind",
+    95: "wi-thunderstorm",
+    96: "wi-storm-showers",
+    99: "wi-storm-showers"
 };
 
 async function search() {
@@ -43,7 +43,7 @@ async function search() {
         resetData("search-container", "weather-title", "days-container", "weather-container");
         return;
     }
-    
+
     const select = document.getElementById("search") ? document.getElementById("search") : document.createElement("select");
     select.id = "search";
     select.onchange = () => getData();
@@ -115,7 +115,9 @@ function buildHourComponents(hours, index) {
                     td.textContent = getFormattedHour(new Date(hour[key]));
                     break;
                 case "weathercode":
-                    td.textContent = WMO[hour[key]];
+                    let icon = document.createElement("img");
+                    icon.src = "./icons/" + WMO[hour[key]] + ".svg";
+                    td.appendChild(icon);
                     break;
                 case "temperature_2m":
                     td.textContent = hour[key] + "°C";

@@ -39,6 +39,16 @@ table {
 
 td {
     text-align: center;
+    border-bottom: 1px dashed black;
+}
+
+td img {
+    aspect-ratio: 4/3;
+    max-width: 80px;
+}
+
+th {
+    padding: 1em;
 }
 
 .hot {
