@@ -88,6 +88,7 @@ async function getData() {
     resetData("days-container");
     for (const day of days) {
         const button = document.createElement("button");
+        button.className = "day";
         button.textContent = getFormattedOptionDate(new Date(day[0].time));
         button.onclick = () => { buildHourComponents(day) };
         document.getElementById("days-container").appendChild(button);
@@ -99,7 +100,7 @@ function buildHourComponents(hours, index) {
     const table = document.createElement("table");
 
     const tr = document.createElement("tr");
-    for (const key of ["Ora", "Tempo", "Temperatura", "Precipitazioni"]) {
+    for (const key of ["Hour", "Weather", "Temperature", "Precipitation"]) {
         const th = document.createElement("th");
         th.textContent = key;
         tr.appendChild(th);
@@ -120,6 +121,11 @@ function buildHourComponents(hours, index) {
                     td.appendChild(icon);
                     break;
                 case "temperature_2m":
+                    if (hour[key] > 35) {
+                        td.className = "hot";
+                    } else if(hour[key] < 15) {
+                        td.className = "cold";
+                    }
                     td.textContent = hour[key] + "°C";
                     break;
                 case "precipitation_probability":
@@ -149,8 +155,8 @@ function getFormattedHour(date) {
  * @returns {string}
  */
 function getFormattedOptionDate(date) {
-    const MONTHS = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
-    return `${date.getDate()}/${date.getMonth()}`;
+    const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    return `${date.getDate()} ${MONTHS[date.getMonth()]}`;
 }
 
 function getNullOption() {
