@@ -23,9 +23,7 @@ input,
     padding: 5px;
 }
 
-#weather-title {
-
-}
+#weather-title {}
 
 #days-container {
     width: 100%;
@@ -52,7 +50,7 @@ input,
 }
 
 table {
-    width: 100%;
+    width: 80%;
 }
 
 td {
