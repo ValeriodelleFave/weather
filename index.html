@@ -1,21 +1,36 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather</title>
-    <script defer src="./script.js"></script>
+    <title>Extreme Weather</title>
+    <!-- Importing bold, aggressive fonts suitable for a modern app -->
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script defer src="./script.js"></script>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
-    <h1>Weather</h1>
-    <main>
-        <input type="text" name="" id="city" oninput="search()" placeholder="Search a city">
-        <div id="search-container"></div>
-        <h2 id="weather-title"></h2>
-        <div id="days-container"></div>
-        <div id="weather-container"></div>
-    </main>
-    <footer>Data from ©Open-Meteo</footer>
+    <div class="app-container">
+        <header>
+            <h1>WEATHER</h1>
+        </header>
+        
+        <main>
+            <div class="search-section">
+                <!-- Debounced search function attached here -->
+                <input type="text" id="city" oninput="handleInput()" placeholder="Search a city..." autocomplete="off">
+                <div id="search-container"></div>
+            </div>
+            
+            <div class="weather-display">
+                <h2 id="weather-title"></h2>
+                <div id="days-container"></div>
+                <div id="weather-container"></div>
+            </div>
+        </main>
+        
+        <footer>DATA PROVIDED BY ©OPEN-METEO</footer>
+    </div>
 </body>
 </html>
