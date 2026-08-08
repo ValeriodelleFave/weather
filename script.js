@@ -88,22 +88,18 @@ async function getData() {
     
     for (let i = 0; i < days.length; i++) {
         const day = days[i];
-        
-        // Calculate median for the day
         const median = getMedianTemperature(day).toFixed(1);
         
         const button = document.createElement("button");
         button.className = "day";
         
-        // Inject both the date and the median temperature into the button
         button.innerHTML = `
             <div class="day-date">${getFormattedOptionDate(new Date(day[0].time))}</div>
-            <div class="day-median">Media: ${median}°C</div>
+            <div class="day-median">MED: ${median}°C</div>
         `;
         
         button.onclick = () => { 
             document.querySelectorAll('.day').forEach(btn => btn.classList.remove('active'));
-            // Use 'button' instead of 'e.target' so clicking the inner divs doesn't break the active class
             button.classList.add('active'); 
             buildHourComponents(day); 
         };
@@ -117,13 +113,10 @@ async function getData() {
     }
 }
 
-// Math helper to find the median temperature
 function getMedianTemperature(hours) {
-    // Extract temperatures and sort them numerically
     const temps = hours.map(hour => hour.temperature_2m).sort((a, b) => a - b);
     const mid = Math.floor(temps.length / 2);
     
-    // If array length is even, median is average of the two middle numbers
     if (temps.length % 2 === 0) {
         return (temps[mid - 1] + temps[mid]) / 2;
     }
@@ -135,7 +128,8 @@ function buildHourComponents(hours) {
     const table = document.createElement("table");
 
     const tr = document.createElement("tr");
-    for (const key of ["Time", "Conditions", "Temp", "Rain %"]) {
+    // Shortened headers for mobile display
+    for (const key of ["Time", "Sky", "Temp", "Rain"]) {
         const th = document.createElement("th");
         th.textContent = key;
         tr.appendChild(th);

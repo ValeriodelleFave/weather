@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#090a0f">
     <title>Extreme Weather</title>
-    <!-- Importing bold, aggressive fonts suitable for a modern app -->
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script defer src="./script.js"></script>
@@ -18,7 +18,6 @@
         
         <main>
             <div class="search-section">
-                <!-- Debounced search function attached here -->
                 <input type="text" id="city" oninput="handleInput()" placeholder="Search a city..." autocomplete="off">
                 <div id="search-container"></div>
             </div>
@@ -26,7 +25,9 @@
             <div class="weather-display">
                 <h2 id="weather-title"></h2>
                 <div id="days-container"></div>
-                <div id="weather-container"></div>
+                <div class="table-wrapper">
+                    <div id="weather-container"></div>
+                </div>
             </div>
         </main>
         
